@@ -10,6 +10,16 @@ class ProductCategory(models.Model):
         return self.title
 
 
+class TimeStampModel(models.Model):
+    """Абстрактная Модель для отслеживание времени изменений"""
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
 class Product(models.Model):
     """Модель для Товаров"""
 
@@ -27,72 +37,14 @@ class Product(models.Model):
         return self.name
 
 
-# cat = ProductCategory.objects.create(title='Электроника')
-# prod1 = Product.objects.create(category=cat, name='Айфон')
-# prod2 = Product.objects.create(category=cat, name='Эирподс')
-# prod3 = Product.objects.create(category=cat, name='Монитор')
-#
-# print(prod3.name)  # Монитор
-# print(prod2.category.title)  # Электроника
-# print(cat.title)  # Электроника
-#
-# print(cat.products.all())  # куерисет [prod1, prod2, prod3]
+class News(TimeStampModel):
+    """Модель для новостей"""
+
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, editable=True)
+    description = models.TextField()
 
 
-# class Genre(models.Model):
-#     title = models.CharField()
-#
-#
-# class Cinema(models.Model):
-#     title = models.CharField()
-#     genre = models.ForeignKey(to=Genre, related_name='movies')
-#
-#
-# Genre.objects.prefetch_related('movies').all()
-# Cinema.objects.select_related('genre').all()
-#
-#
-# # harry_potter = Cinema.objects.first()
-# # harry_potter.genre.title  # Фантастика
-# #
-# # fantastic = Genre.objects.first()
-# # fantastic.movies.all()  # куерисет [мстители, поттер, властелин колец]
-#
-#
-# class HashTag(models.Model):
-#     name = models.CharField(unique=True)
-#
-#
-# class Publication(models.Model):
-#     image = models.ImageField()
-#     tags = models.ManyToManyField(to=HashTag, related_name='publications')
-#
-#
-# publication_qs = Publication.objects.prefetch_related('tags').all()
-# for pub in publication_qs:
-#     print(pub.tags.all())
-#
-#
-# hashtags_qs = HashTag.objects.prefetch_related('publications').all()
-# for tag in hashtags_qs:
-#     print(tag.publications.all())
-#
-
-# class ElectronicProduct(models.Model):
-#     name = models.CharField()
-#
-#
-# class ElectronicProductDetail(models.Model):
-#     memory = models.CharField()
-#     battery = models.CharField()
-#     product = models.OneToOneField(to=ElectronicProduct, related_name='detail')
-#
-#
-# products = ElectronicProduct.objects.select_related('detail').all()
-# for p in products:
-#     print(p.detail.memory)
-#
-#
-# details = ElectronicProductDetail.objects.select_related('product').all()
-# for d in details:
-#     print(d.product.name)
+# class SocialNetwork(models.Model):  # TODO: хотим чтобы в данной модельке(*таблице в бд) было ТОЛЬКО ОДНА запись
+#     facebook = models.URLField()
+#     instagram = models.URLField()

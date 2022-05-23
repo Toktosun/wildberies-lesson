@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.story.models import Product, ProductCategory
+from apps.story.models import Product, ProductCategory, News
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -20,3 +20,10 @@ class ProductCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategory
         fields = ('id', 'name', 'products')
+
+
+class NewsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = News
+        fields = ('id', 'title', 'description', 'created_at', 'updated_at',)
